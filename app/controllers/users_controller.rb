@@ -1,7 +1,5 @@
 class UsersController < ApplicationController
-  # before_action :authorize_user, except: [:login, :check, :destroyCookie, :create, :index]
   before_action :set_user, only: [:show, :update, :destroy]
-  # before_action :authenticate_token, except: [:login, :create]
 
   # GET /users
   def index
@@ -16,7 +14,7 @@ class UsersController < ApplicationController
   end
 
   def destroyCookie
-    cookie.delete(:jwt)
+    cookies.delete(:jwt)
   end
 
   def show
@@ -55,7 +53,7 @@ class UsersController < ApplicationController
         render json: @user.errors, status: :unprocessable_entity
       end
     end
-    
+
   # DELETE /users/1
   def destroy
     @user.destroy

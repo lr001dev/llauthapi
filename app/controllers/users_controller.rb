@@ -1,5 +1,8 @@
 class UsersController < ApplicationController
+  # before_action :authenticate_token, except: [:login, :create]
+  # before_action :authorize_user, except: [:login, :check, :destroyCookie, :create]
   before_action :set_user, only: [:show, :update, :destroy]
+
 
   # GET /users
   def index
@@ -8,8 +11,8 @@ class UsersController < ApplicationController
   end
 
   def check
-    if get_current_user.id
-      render json: { user: get_current_user.id }
+    if get_current_user
+      render json: { user: get_current_user }
     end
   end
 
@@ -30,7 +33,7 @@ class UsersController < ApplicationController
       cookies.signed[:jwt] = { value: token, httponly: true }
       render json: {status: 200, token: token, user: user }
     else
-      render json: {status: 401, message: "Unauthorized"}
+      render json: {status: 401, message: "Unauthorized Login"}
     end
   end
 

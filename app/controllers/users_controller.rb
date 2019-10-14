@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  # before_action :authenticate_token, except: [:login, :create]
-  # before_action :authorize_user, except: [:login, :check, :destroyCookie, :create]
+  before_action :authorize_user, except: [:login, :check, :destroyCookie, :create]
+  before_action :authenticate_token, except: [:login, :create]
   before_action :set_user, only: [:show, :update, :destroy]
 
 
@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   end
 
   def check
-    if get_current_user
+    if get_current_user.id
       render json: { user: get_current_user }
     end
   end
@@ -26,6 +26,7 @@ class UsersController < ApplicationController
 
   def login
     user = User.find_by(email: params[:user][:email])
+    puts 'this is user'
     puts user
     if user && user.authenticate(params[:user][:password])
 
